@@ -56,8 +56,6 @@ gameLoop window canvas shapes mousePosRef = do
   draw canvas shapes
   drawShape canvas myMarch
   drawShape canvas myCamera
-  drawWeird canvas myCamera myLine
-
 --(x, y) <- liftIO $ readIORef mousePosRef
 -- let myCamera = newCamera x y 10 (RGB 0 0 0)
 --drawShape canvas myCamera
