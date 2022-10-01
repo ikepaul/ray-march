@@ -34,3 +34,14 @@ drawShape canvas (Line x1 y1 x2 y2 w c) = do
   moveTo (x1, y1) canvas
   lineTo (x2, y2) canvas
   stroke canvas
+
+drawMarch :: Element -> Shape -> UI ()
+drawMarch canvas (Circle x y r c) = do
+  beginPath canvas
+  pure canvas # set lineWidth 1
+  pure canvas # set strokeStyle ("rgb(" ++ (show . red) c ++ "," ++ (show . green) c ++ "," ++ (show . blue) c ++ ")")
+  arc (x, y) r 0 (2 * pi) canvas
+  stroke canvas
+
+drawMarches :: Element -> [Shape] -> UI()
+drawMarches canvas = mapM_ (drawMarch canvas)
