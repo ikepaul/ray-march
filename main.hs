@@ -59,18 +59,18 @@ gameLoop window canvas mousePosRef angleRef = do
   (x, y) <- liftIO $ readIORef mousePosRef
   angle <- liftIO $ readIORef angleRef
   let myCamera = newCamera x y 10 (RGB 0 0 0)
-  let myMarches = startMarch (x, y) angle
+  let myMarches = castRay (x, y) angle
 
   draw canvas theShapes
   drawShape canvas myCamera
   drawMarches canvas myMarches
 
-startMarch :: (Double, Double) -> Double -> [March]
-startMarch (x, y) angle = newMarch x y (minDistance ) (RGB 10 221 169) : nextMarch
+castRay :: (Double, Double) -> Double -> Ray
+castRay (x, y) angle = newMarch x y (minDistance ) (RGB 10 221 169) : nextMarch
   where
     nextMarch 
       | minDistance < 5 || x > canvasWidth || y > canvasHeight || x < 0 || y < 0= []
-      | otherwise =startMarch ( x + minDistance * cos angle, y + minDistance * sin angle) angle
+      | otherwise =castRay ( x + minDistance * cos angle, y + minDistance * sin angle) angle
     minDistance = minimum distances
     distances = map (distance (x, y)) theShapes
 
@@ -80,3 +80,5 @@ wall3 = Line canvasWidth 0 canvasWidth canvasHeight 0 (RGB 0 0 0)
 wall4 = Line 0 canvasHeight canvasWidth canvasHeight 0 (RGB 0 0 0)
 
 theShapes = wall1:wall2:wall3:wall4 : myShapes
+
+type Ray = [March]
